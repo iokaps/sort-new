@@ -4,13 +4,18 @@ import { useGlobalController } from '@/hooks/useGlobalController';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
 import { kmClient } from '@/services/km-client';
-import { SharedStateView } from '@/views/shared-state-view';
+import { globalActions } from '@/state/actions/global-actions';
+import { globalStore } from '@/state/stores/global-store';
+import { HostSetupView } from '@/views/host-setup-view';
+import { ResultsView } from '@/views/results-view';
 import { KmQrCode } from '@kokimoki/shared';
 import * as React from 'react';
+import { useSnapshot } from 'valtio';
 
 const App: React.FC = () => {
 	useGlobalController();
 	const { title } = config;
+	const globalState = useSnapshot(globalStore.proxy);
 	useDocumentTitle(title);
 
 	if (kmClient.clientContext.mode !== 'host') {
@@ -33,6 +38,7 @@ const App: React.FC = () => {
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
+				{/* Game Links */}
 				<div className="rounded-lg border border-gray-200 bg-white shadow-md">
 					<div className="flex flex-col gap-2 p-6">
 						<h2 className="text-xl font-bold">{config.gameLinksTitle}</h2>
@@ -56,10 +62,72 @@ const App: React.FC = () => {
 								{config.presenterLinkLabel}
 							</a>
 						</div>
+						<div className="mt-2">
+							<strong>{config.players}:</strong>{' '}
+							{Object.keys(globalState.players).length}
+						</div>
 					</div>
 				</div>
 
-				<SharedStateView />
+				{/* Setup Phase */}
+				{(globalState.gamePhase === 'setup' ||
+					globalState.gamePhase === 'lobby') && <HostSetupView />}
+
+				{/* Playing Phase */}
+				{globalState.gamePhase === 'playing' && (
+					<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+						<div className="p-6">
+							<h2 className="mb-4 text-2xl font-bold">Game in Progress</h2>
+							<div className="mb-4 space-y-2">
+								<p>
+									<strong>{config.themeLabel}:</strong> {globalState.theme}
+								</p>
+								<p>
+									<strong>Categories:</strong> {globalState.categories[0]} vs{' '}
+									{globalState.categories[1]}
+								</p>
+							</div>
+
+							{/* Live Scores */}
+							<div className="space-y-2">
+								<h3 className="text-lg font-bold">Live Scores</h3>
+								{Object.entries(globalState.scores).length > 0 ? (
+									Object.entries(globalState.scores)
+										.sort((a, b) => b[1].score - a[1].score)
+										.map(([clientId, scoreData]) => (
+											<div
+												key={clientId}
+												className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+											>
+												<span className="font-medium">{scoreData.name}</span>
+												<div className="flex gap-4 text-sm">
+													<span>Score: {scoreData.score}</span>
+													<span>Sorted: {scoreData.sortedItems}</span>
+												</div>
+											</div>
+										))
+								) : (
+									<p className="text-gray-500">No scores yet</p>
+								)}
+							</div>
+
+							<button
+								type="button"
+								onClick={globalActions.stopGame}
+								className="mt-6 w-full rounded-lg bg-red-600 px-6 py-3 font-bold text-white transition-colors hover:bg-red-700"
+							>
+								{config.stopButton}
+							</button>
+						</div>
+					</div>
+				)}
+
+				{/* Results Phase */}
+				{globalState.gamePhase === 'results' && (
+					<div className="flex justify-center">
+						<ResultsView />
+					</div>
+				)}
 			</HostPresenterLayout.Main>
 		</HostPresenterLayout.Root>
 	);

@@ -1,4 +1,5 @@
 import { kmClient } from '@/services/km-client';
+import { globalActions } from '@/state/actions/global-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { useEffect } from 'react';
 import { useSnapshot } from 'valtio';
@@ -35,9 +36,18 @@ export function useGlobalController() {
 			return;
 		}
 
-		// Global controller-specific logic goes here
-		// For example, a time-based event that modifies the global state
-		// All global controller logic does not need to be time-based
+		const globalState = globalStore.proxy;
+
+		// Auto-transition to results when time is up
+		if (globalState.gamePhase === 'playing' && globalState.roundStartTime > 0) {
+			const timeElapsed = serverTime - globalState.roundStartTime;
+			const timeRemaining = globalState.roundDuration - timeElapsed;
+
+			if (timeRemaining <= 0) {
+				// Time's up! Transition to results
+				globalActions.setGamePhase('results');
+			}
+		}
 	}, [isGlobalController, serverTime]);
 
 	return isGlobalController;

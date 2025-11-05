@@ -10,7 +10,8 @@ import { playerStore } from '@/state/stores/player-store';
 import { ConnectionsView } from '@/views/connections-view';
 import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
-import { SharedStateView } from '@/views/shared-state-view';
+import { PlayerGameView } from '@/views/player-game-view';
+import { ResultsView } from '@/views/results-view';
 import { KmModalProvider } from '@kokimoki/shared';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
@@ -18,19 +19,21 @@ import { useSnapshot } from 'valtio';
 const App: React.FC = () => {
 	const { title } = config;
 	const { name, currentView } = useSnapshot(playerStore.proxy);
-	const { started } = useSnapshot(globalStore.proxy);
+	const { started, gamePhase } = useSnapshot(globalStore.proxy);
 
 	useGlobalController();
 	useDocumentTitle(title);
 
+	// Auto-transition views based on game phase
 	React.useEffect(() => {
-		// While game start, force view to 'shared-state', otherwise to 'lobby'
-		if (started) {
-			playerActions.setCurrentView('shared-state');
-		} else {
+		if (gamePhase === 'playing') {
+			playerActions.setCurrentView('game');
+		} else if (gamePhase === 'results') {
+			playerActions.setCurrentView('results');
+		} else if (!started) {
 			playerActions.setCurrentView('lobby');
 		}
-	}, [started]);
+	}, [started, gamePhase]);
 
 	if (!name) {
 		return (
@@ -43,40 +46,25 @@ const App: React.FC = () => {
 		);
 	}
 
-	if (!started) {
-		return (
-			<KmModalProvider>
-				<PlayerLayout.Root>
-					<PlayerLayout.Header>
-						<PlayerMenu />
-					</PlayerLayout.Header>
-
-					<PlayerLayout.Main>
-						{currentView === 'lobby' && <GameLobbyView />}
-						{currentView === 'connections' && <ConnectionsView />}
-					</PlayerLayout.Main>
-
-					<PlayerLayout.Footer>
-						<NameLabel name={name} />
-					</PlayerLayout.Footer>
-				</PlayerLayout.Root>
-			</KmModalProvider>
-		);
-	}
-
 	return (
-		<PlayerLayout.Root>
-			<PlayerLayout.Header />
+		<KmModalProvider>
+			<PlayerLayout.Root>
+				<PlayerLayout.Header>
+					{currentView === 'lobby' && <PlayerMenu />}
+				</PlayerLayout.Header>
 
-			<PlayerLayout.Main>
-				{currentView === 'shared-state' && <SharedStateView />}
-				{/* Add new views here */}
-			</PlayerLayout.Main>
+				<PlayerLayout.Main>
+					{currentView === 'lobby' && <GameLobbyView />}
+					{currentView === 'connections' && <ConnectionsView />}
+					{currentView === 'game' && <PlayerGameView />}
+					{currentView === 'results' && <ResultsView />}
+				</PlayerLayout.Main>
 
-			<PlayerLayout.Footer>
-				<NameLabel name={name} />
-			</PlayerLayout.Footer>
-		</PlayerLayout.Root>
+				<PlayerLayout.Footer>
+					<NameLabel name={name} />
+				</PlayerLayout.Footer>
+			</PlayerLayout.Root>
+		</KmModalProvider>
 	);
 };
 

@@ -32,17 +32,49 @@ theme:
   depth: '1'
 
 # Translations
-title: 'Host Starter'
+title: 'Sorting Mania'
+
+# Setup & Lobby
+setupTitle: 'Game Setup'
+aiGenerationTab: 'AI Generation'
+manualSetupTab: 'Manual Setup'
+
+themeLabel: 'Theme'
+themePlaceholder: 'e.g., Music Artists, Football Teams, Superheroes'
+categoryLeftLabel: 'Left Category'
+categoryRightLabel: 'Right Category'
+categoryLeftPlaceholder: 'e.g., Pop'
+categoryRightPlaceholder: 'e.g., Rock'
+
+itemsLabel: 'Items'
+itemTextPlaceholder: 'Item text'
+addItemButton: 'Add Item'
+removeItemButton: 'Remove'
+
+roundDurationLabel: 'Round Duration (seconds)'
+generateButton: 'Generate with AI'
+generatingText: 'Generating...'
+previewTitle: 'Preview'
+
+aiSystemPrompt: 'You are a game content generator. Generate engaging sorting game content based on the theme provided. IMPORTANT: Return ONLY valid JSON without any markdown formatting or code blocks. The JSON format must be: {"theme": "string", "categories": ["string", "string"], "items": [{"text": "string", "category": 0 or 1}]}. Generate 20-30 items with balanced distribution between categories (roughly 50/50 split).'
 
 gameLobbyMd: |
   # Waiting for game to start...
   The game will start once the host presses the start button.
 
-connectionsMd: |
-  # Connections example
+# Game
+swipeLeftHint: '← Swipe Left'
+swipeRightHint: 'Swipe Right →'
+itemsProgress: 'Items: {current} / {total}'
+timeRemaining: 'Time: {time}'
 
-sharedStateMd: |
-  # Shared State example
+# Results
+resultsTitle: 'Game Results'
+yourScore: 'Your Score: {score}'
+correctSorts: 'Correct Sorts'
+totalSorts: 'Total Sorted'
+newRoundButton: 'New Round'
+endGameButton: 'End Game'
 
 players: 'Players'
 timeElapsed: 'Time elapsed'

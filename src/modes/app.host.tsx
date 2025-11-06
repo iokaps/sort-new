@@ -16,6 +16,7 @@ const App: React.FC = () => {
 	useGlobalController();
 	const { title } = config;
 	const globalState = useSnapshot(globalStore.proxy);
+	const connections = useSnapshot(globalStore.connections);
 	useDocumentTitle(title);
 
 	if (kmClient.clientContext.mode !== 'host') {
@@ -63,16 +64,13 @@ const App: React.FC = () => {
 							</a>
 						</div>
 						<div className="mt-2">
-							<strong>{config.players}:</strong>{' '}
-							{Object.keys(globalState.players).length}
+							<strong>{config.players}:</strong> {connections.clientIds.size}
 						</div>
 					</div>
-				</div>
-
+				</div>{' '}
 				{/* Setup Phase */}
 				{(globalState.gamePhase === 'setup' ||
 					globalState.gamePhase === 'lobby') && <HostSetupView />}
-
 				{/* Playing Phase */}
 				{globalState.gamePhase === 'playing' && (
 					<div className="rounded-lg border border-gray-200 bg-white shadow-md">
@@ -121,7 +119,6 @@ const App: React.FC = () => {
 						</div>
 					</div>
 				)}
-
 				{/* Results Phase */}
 				{globalState.gamePhase === 'results' && (
 					<div className="flex justify-center">

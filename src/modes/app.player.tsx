@@ -56,9 +56,11 @@ const App: React.FC = () => {
 	return (
 		<KmModalProvider>
 			<PlayerLayout.Root>
-				<PlayerLayout.Header>
-					{currentView === 'lobby' && <PlayerMenu />}
-				</PlayerLayout.Header>
+				{currentView !== 'game' && (
+					<PlayerLayout.Header>
+						{currentView === 'lobby' && <PlayerMenu />}
+					</PlayerLayout.Header>
+				)}
 				<PlayerLayout.Main>
 					{currentView === 'lobby' && (
 						<div className="flex items-center justify-center p-4">
@@ -68,7 +70,7 @@ const App: React.FC = () => {
 					{currentView === 'connections' && <ConnectionsView />}
 					{currentView === 'game' && <PlayerGameView />}
 					{currentView === 'results' && <ResultsView />}
-				</PlayerLayout.Main>{' '}
+				</PlayerLayout.Main>
 				<PlayerLayout.Footer>
 					<NameLabel name={name} />
 				</PlayerLayout.Footer>

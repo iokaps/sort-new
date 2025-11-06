@@ -14,6 +14,7 @@ import { useSnapshot } from 'valtio';
 const App: React.FC = () => {
 	const { title } = config;
 	const globalState = useSnapshot(globalStore.proxy);
+	const connections = useSnapshot(globalStore.connections);
 	const serverTime = useServerTimer(100);
 
 	useGlobalController();
@@ -54,13 +55,11 @@ const App: React.FC = () => {
 								{playerLink}
 							</a>
 							<div className="mt-4 text-lg">
-								<strong>{config.players}:</strong>{' '}
-								{Object.keys(globalState.players).length}
+								<strong>{config.players}:</strong> {connections.clientIds.size}
 							</div>
 						</div>
 					</div>
-				) : null}
-
+				) : null}{' '}
 				{/* Playing State */}
 				{globalState.gamePhase === 'playing' && (
 					<div className="space-y-6">
@@ -109,7 +108,6 @@ const App: React.FC = () => {
 						</div>
 					</div>
 				)}
-
 				{/* Results State */}
 				{globalState.gamePhase === 'results' && (
 					<div className="flex justify-center">

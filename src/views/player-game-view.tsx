@@ -75,7 +75,7 @@ export const PlayerGameView: React.FC = () => {
 		<div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
 			{/* Timer */}
 			<div className="text-center">
-				<div className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-3xl font-bold text-transparent">
+				<div className="text-3xl font-bold text-purple-600">
 					<KmTimeCountdown ms={timeRemaining} />
 				</div>
 			</div>

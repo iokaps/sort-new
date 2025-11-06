@@ -16,4 +16,35 @@ html,
 body {
 	background-color: var(--color-slate-100);
 	font-family: var(--font-family);
+	/* Prevent pull-to-refresh on mobile */
+	overscroll-behavior-y: contain;
+	/* Prevent text selection during swipe */
+	-webkit-user-select: none;
+	user-select: none;
+	/* Prevent tap highlight on mobile */
+	-webkit-tap-highlight-color: transparent;
+	/* Smooth scrolling */
+	-webkit-overflow-scrolling: touch;
+}
+
+/* Re-enable text selection for inputs and text areas */
+input,
+textarea,
+[contenteditable] {
+	-webkit-user-select: text;
+	user-select: text;
+}
+
+/* Prevent iOS zoom on input focus */
+@media screen and (max-width: 768px) {
+	input,
+	textarea,
+	select {
+		font-size: 16px !important;
+	}
+}
+
+/* Safe area for notched devices */
+.safe-area-inset-bottom {
+	padding-bottom: env(safe-area-inset-bottom);
 }

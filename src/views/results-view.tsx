@@ -26,18 +26,18 @@ export const ResultsView: React.FC = () => {
 
 	return (
 		<div className="w-full max-w-4xl space-y-6">
-			<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-				<h2 className="mb-6 text-center text-3xl font-bold">
+			<div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 p-6 shadow-xl">
+				<h2 className="mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-center text-3xl font-bold text-transparent">
 					{config.resultsTitle}
 				</h2>
 
 				{/* Player's Personal Score */}
 				{playerScore && (
-					<div className="mb-6 rounded-lg bg-blue-50 p-4 text-center">
-						<p className="text-xl font-bold text-blue-900">
+					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
+						<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
 							{config.yourScore.replace('{score}', String(playerScore.score))}
 						</p>
-						<div className="mt-2 flex justify-center gap-6 text-sm text-blue-700">
+						<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
 							<span>
 								{config.correctSorts}: {playerScore.score}
 							</span>
@@ -62,14 +62,14 @@ export const ResultsView: React.FC = () => {
 						<button
 							type="button"
 							onClick={globalActions.startNewRound}
-							className="flex-1 rounded-lg bg-blue-600 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-700"
+							className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
 						>
 							{config.newRoundButton}
 						</button>
 						<button
 							type="button"
 							onClick={globalActions.stopGame}
-							className="flex-1 rounded-lg bg-gray-600 px-6 py-3 font-bold text-white transition-colors hover:bg-gray-700"
+							className="flex-1 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
 						>
 							{config.endGameButton}
 						</button>

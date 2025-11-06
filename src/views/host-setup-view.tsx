@@ -11,9 +11,11 @@ export const HostSetupView: React.FC = () => {
 	const globalState = useSnapshot(globalStore.proxy);
 
 	return (
-		<div className="rounded-lg border border-gray-200 bg-white shadow-md">
-			<div className="border-b border-gray-200 p-6">
-				<h2 className="text-2xl font-bold">{config.setupTitle}</h2>
+		<div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 shadow-xl">
+			<div className="border-b-2 border-purple-200 p-6">
+				<h2 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+					{config.setupTitle}
+				</h2>
 			</div>
 
 			<div className="p-6">
@@ -23,10 +25,10 @@ export const HostSetupView: React.FC = () => {
 						type="button"
 						onClick={() => setActiveTab('ai')}
 						className={cn(
-							'rounded-lg px-4 py-2 font-medium transition-colors',
+							'rounded-xl px-4 py-2 font-medium transition-all',
 							activeTab === 'ai'
-								? 'bg-blue-600 text-white'
-								: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+								? 'scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+								: 'bg-purple-100 text-purple-700 hover:bg-purple-200'
 						)}
 					>
 						{config.aiGenerationTab}
@@ -35,10 +37,10 @@ export const HostSetupView: React.FC = () => {
 						type="button"
 						onClick={() => setActiveTab('manual')}
 						className={cn(
-							'rounded-lg px-4 py-2 font-medium transition-colors',
+							'rounded-xl px-4 py-2 font-medium transition-all',
 							activeTab === 'manual'
-								? 'bg-blue-600 text-white'
-								: 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+								? 'scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+								: 'bg-purple-100 text-purple-700 hover:bg-purple-200'
 						)}
 					>
 						{config.manualSetupTab}
@@ -80,7 +82,7 @@ export const HostSetupView: React.FC = () => {
 					<button
 						type="button"
 						onClick={globalActions.startGame}
-						className="mt-6 w-full rounded-lg bg-green-600 px-6 py-3 font-bold text-white transition-colors hover:bg-green-700"
+						className="mt-6 w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
 					>
 						{config.startButton}
 					</button>
@@ -129,7 +131,7 @@ const AIGenerationTab: React.FC = () => {
 				type="button"
 				onClick={handleGenerate}
 				disabled={!themeInput.trim() || isGenerating}
-				className="w-full rounded-lg bg-blue-600 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-700 disabled:bg-gray-400"
+				className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105 disabled:scale-100 disabled:bg-gray-400"
 			>
 				{isGenerating ? config.generatingText : config.generateButton}
 			</button>
@@ -306,7 +308,7 @@ const ManualSetupTab: React.FC = () => {
 			<button
 				type="button"
 				onClick={handleSave}
-				className="w-full rounded-lg bg-blue-600 px-6 py-3 font-bold text-white transition-colors hover:bg-blue-700"
+				className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
 			>
 				Save Configuration
 			</button>

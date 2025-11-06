@@ -35,11 +35,18 @@ const App: React.FC = () => {
 		}
 	}, [started, gamePhase]);
 
+	// Reset player progress when returning to lobby (new round)
+	React.useEffect(() => {
+		if (gamePhase === 'lobby' || gamePhase === 'setup') {
+			playerActions.resetPlayerProgress();
+		}
+	}, [gamePhase]);
+
 	if (!name) {
 		return (
 			<PlayerLayout.Root>
 				<PlayerLayout.Header />
-				<PlayerLayout.Main>
+				<PlayerLayout.Main className="flex items-center justify-center p-4">
 					<CreateProfileView />
 				</PlayerLayout.Main>
 			</PlayerLayout.Root>
@@ -52,14 +59,16 @@ const App: React.FC = () => {
 				<PlayerLayout.Header>
 					{currentView === 'lobby' && <PlayerMenu />}
 				</PlayerLayout.Header>
-
 				<PlayerLayout.Main>
-					{currentView === 'lobby' && <GameLobbyView />}
+					{currentView === 'lobby' && (
+						<div className="flex items-center justify-center p-4">
+							<GameLobbyView />
+						</div>
+					)}
 					{currentView === 'connections' && <ConnectionsView />}
 					{currentView === 'game' && <PlayerGameView />}
 					{currentView === 'results' && <ResultsView />}
-				</PlayerLayout.Main>
-
+				</PlayerLayout.Main>{' '}
 				<PlayerLayout.Footer>
 					<NameLabel name={name} />
 				</PlayerLayout.Footer>

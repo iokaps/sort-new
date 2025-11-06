@@ -14,41 +14,55 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 	onSwipeLeft,
 	onSwipeRight,
 	className,
-	swipeThreshold = 100
+	swipeThreshold = 80
 }) => {
 	const cardRef = React.useRef<HTMLDivElement>(null);
 	const [isDragging, setIsDragging] = React.useState(false);
 	const [startX, setStartX] = React.useState(0);
+	const [startY, setStartY] = React.useState(0);
 	const [currentX, setCurrentX] = React.useState(0);
+	const [currentY, setCurrentY] = React.useState(0);
 	const [translateX, setTranslateX] = React.useState(0);
 
-	const handleStart = (clientX: number) => {
+	const handleStart = (clientX: number, clientY: number) => {
 		setIsDragging(true);
 		setStartX(clientX);
+		setStartY(clientY);
 		setCurrentX(clientX);
+		setCurrentY(clientY);
 	};
 
-	const handleMove = (clientX: number) => {
+	const handleMove = (clientX: number, clientY: number) => {
 		if (!isDragging) return;
 		setCurrentX(clientX);
-		const delta = clientX - startX;
-		setTranslateX(delta);
+		setCurrentY(clientY);
+		const deltaX = clientX - startX;
+		const deltaY = clientY - startY;
+
+		// Only move horizontally if horizontal movement is dominant
+		if (Math.abs(deltaX) > Math.abs(deltaY)) {
+			setTranslateX(deltaX);
+		}
 	};
 
 	const handleEnd = () => {
 		if (!isDragging) return;
 		setIsDragging(false);
 
-		const delta = currentX - startX;
+		const deltaX = currentX - startX;
+		const deltaY = currentY - startY;
 
-		// Check if swipe threshold is met
-		if (Math.abs(delta) >= swipeThreshold) {
-			if (delta < 0 && onSwipeLeft) {
+		// Check if swipe is primarily horizontal
+		if (
+			Math.abs(deltaX) > Math.abs(deltaY) &&
+			Math.abs(deltaX) >= swipeThreshold
+		) {
+			if (deltaX < 0 && onSwipeLeft) {
 				// Swiped left
 				animateOut('left', onSwipeLeft);
 				return;
 			}
-			if (delta > 0 && onSwipeRight) {
+			if (deltaX > 0 && onSwipeRight) {
 				// Swiped right
 				animateOut('right', onSwipeRight);
 				return;
@@ -68,17 +82,23 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 			callback();
 			setTranslateX(0);
 			setStartX(0);
+			setStartY(0);
 			setCurrentX(0);
-		}, 300);
+			setCurrentY(0);
+		}, 250);
 	};
 
 	// Mouse events
 	const handleMouseDown = (e: React.MouseEvent) => {
-		handleStart(e.clientX);
+		e.preventDefault();
+		handleStart(e.clientX, e.clientY);
 	};
 
 	const handleMouseMove = (e: React.MouseEvent) => {
-		handleMove(e.clientX);
+		if (isDragging) {
+			e.preventDefault();
+		}
+		handleMove(e.clientX, e.clientY);
 	};
 
 	const handleMouseUp = () => {
@@ -93,19 +113,23 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 
 	// Touch events
 	const handleTouchStart = (e: React.TouchEvent) => {
-		handleStart(e.touches[0].clientX);
+		handleStart(e.touches[0].clientX, e.touches[0].clientY);
 	};
 
 	const handleTouchMove = (e: React.TouchEvent) => {
-		handleMove(e.touches[0].clientX);
+		// Prevent page scroll when swiping
+		if (isDragging && Math.abs(currentX - startX) > 10) {
+			e.preventDefault();
+		}
+		handleMove(e.touches[0].clientX, e.touches[0].clientY);
 	};
 
 	const handleTouchEnd = () => {
 		handleEnd();
 	};
 
-	const rotation = translateX / 20; // Subtle rotation effect
-	const opacity = 1 - Math.abs(translateX) / 300;
+	const rotation = translateX / 25; // Subtle rotation effect
+	const opacity = Math.max(0.5, 1 - Math.abs(translateX) / 400);
 
 	return (
 		<div
@@ -124,7 +148,7 @@ export const SwipeableCard: React.FC<SwipeableCardProps> = ({
 			style={{
 				transform: `translateX(${translateX}px) rotate(${rotation}deg)`,
 				opacity: opacity,
-				transition: isDragging ? 'none' : 'all 0.3s ease-out'
+				transition: isDragging ? 'none' : 'all 0.25s ease-out'
 			}}
 		>
 			{children}

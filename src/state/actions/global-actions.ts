@@ -3,6 +3,16 @@ import { kmClient } from '@/services/km-client';
 import type { GameItem } from '../stores/global-store';
 import { globalStore } from '../stores/global-store';
 
+// Fisher-Yates shuffle algorithm
+function shuffleArray<T>(array: T[]): T[] {
+	const shuffled = [...array];
+	for (let i = shuffled.length - 1; i > 0; i--) {
+		const j = Math.floor(Math.random() * (i + 1));
+		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+	}
+	return shuffled;
+}
+
 export const globalActions = {
 	async startGame() {
 		await kmClient.transact([globalStore], ([globalState]) => {
@@ -47,7 +57,8 @@ export const globalActions = {
 			await kmClient.transact([globalStore], ([globalState]) => {
 				globalState.theme = data.theme;
 				globalState.categories = [data.categories[0], data.categories[1]];
-				globalState.items = data.items;
+				// Shuffle items for random order
+				globalState.items = shuffleArray(data.items);
 			});
 
 			return { success: true };
@@ -66,7 +77,8 @@ export const globalActions = {
 		await kmClient.transact([globalStore], ([globalState]) => {
 			globalState.theme = theme;
 			globalState.categories = categories;
-			globalState.items = items;
+			// Shuffle items for random order
+			globalState.items = shuffleArray(items);
 			globalState.roundDuration = roundDuration;
 		});
 	},
@@ -94,12 +106,13 @@ export const globalActions = {
 
 	async startNewRound() {
 		await kmClient.transact([globalStore], ([globalState]) => {
-			globalState.gamePhase = 'setup';
+			globalState.gamePhase = 'lobby';
 			globalState.theme = '';
 			globalState.categories = ['', ''];
 			globalState.items = [];
 			globalState.scores = {};
 			globalState.started = false;
+			globalState.roundStartTime = 0;
 		});
 	}
 };

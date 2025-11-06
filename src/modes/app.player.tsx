@@ -55,7 +55,13 @@ const App: React.FC = () => {
 
 	return (
 		<KmModalProvider>
-			<PlayerLayout.Root>
+			<PlayerLayout.Root
+				className={
+					currentView === 'game'
+						? 'grid-rows-[1fr]'
+						: 'grid-rows-[auto_1fr_auto]'
+				}
+			>
 				{currentView !== 'game' && (
 					<PlayerLayout.Header>
 						{currentView === 'lobby' && <PlayerMenu />}
@@ -71,9 +77,11 @@ const App: React.FC = () => {
 					{currentView === 'game' && <PlayerGameView />}
 					{currentView === 'results' && <ResultsView />}
 				</PlayerLayout.Main>
-				<PlayerLayout.Footer>
-					<NameLabel name={name} />
-				</PlayerLayout.Footer>
+				{currentView !== 'game' && (
+					<PlayerLayout.Footer>
+						<NameLabel name={name} />
+					</PlayerLayout.Footer>
+				)}
 			</PlayerLayout.Root>
 		</KmModalProvider>
 	);

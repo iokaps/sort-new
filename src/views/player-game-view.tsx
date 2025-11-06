@@ -72,7 +72,7 @@ export const PlayerGameView: React.FC = () => {
 	}
 
 	return (
-		<div className="flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
+		<div className="pb-safe flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
 			{/* Timer */}
 			<div className="text-center">
 				<div className="text-3xl font-bold text-purple-600">
@@ -122,7 +122,7 @@ export const PlayerGameView: React.FC = () => {
 			</div>
 
 			{/* Swipe Hint */}
-			<div className="pb-4 text-center text-sm font-medium text-purple-600">
+			<div className="text-center text-sm font-medium text-purple-600">
 				{config.swipeLeftHint} or {config.swipeRightHint}
 			</div>
 		</div>

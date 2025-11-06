@@ -12,7 +12,7 @@ import { CreateProfileView } from '@/views/create-profile-view';
 import { GameLobbyView } from '@/views/game-lobby-view';
 import { PlayerGameView } from '@/views/player-game-view';
 import { ResultsView } from '@/views/results-view';
-import { KmModalProvider } from '@kokimoki/shared';
+import { KmConfettiProvider, KmModalProvider } from '@kokimoki/shared';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -54,36 +54,38 @@ const App: React.FC = () => {
 	}
 
 	return (
-		<KmModalProvider>
-			<PlayerLayout.Root
-				className={
-					currentView === 'game'
-						? 'grid-rows-[1fr]'
-						: 'grid-rows-[auto_1fr_auto]'
-				}
-			>
-				{currentView !== 'game' && (
-					<PlayerLayout.Header>
-						{currentView === 'lobby' && <PlayerMenu />}
-					</PlayerLayout.Header>
-				)}
-				<PlayerLayout.Main>
-					{currentView === 'lobby' && (
-						<div className="flex items-center justify-center p-4">
-							<GameLobbyView />
-						</div>
+		<KmConfettiProvider>
+			<KmModalProvider>
+				<PlayerLayout.Root
+					className={
+						currentView === 'game'
+							? 'grid-rows-[1fr]'
+							: 'grid-rows-[auto_1fr_auto]'
+					}
+				>
+					{currentView !== 'game' && (
+						<PlayerLayout.Header>
+							{currentView === 'lobby' && <PlayerMenu />}
+						</PlayerLayout.Header>
 					)}
-					{currentView === 'connections' && <ConnectionsView />}
-					{currentView === 'game' && <PlayerGameView />}
-					{currentView === 'results' && <ResultsView />}
-				</PlayerLayout.Main>
-				{currentView !== 'game' && (
-					<PlayerLayout.Footer>
-						<NameLabel name={name} />
-					</PlayerLayout.Footer>
-				)}
-			</PlayerLayout.Root>
-		</KmModalProvider>
+					<PlayerLayout.Main>
+						{currentView === 'lobby' && (
+							<div className="flex items-center justify-center p-4">
+								<GameLobbyView />
+							</div>
+						)}
+						{currentView === 'connections' && <ConnectionsView />}
+						{currentView === 'game' && <PlayerGameView />}
+						{currentView === 'results' && <ResultsView />}
+					</PlayerLayout.Main>
+					{currentView !== 'game' && (
+						<PlayerLayout.Footer>
+							<NameLabel name={name} />
+						</PlayerLayout.Footer>
+					)}
+				</PlayerLayout.Root>
+			</KmModalProvider>
+		</KmConfettiProvider>
 	);
 };
 

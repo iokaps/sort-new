@@ -1,11 +1,16 @@
 import { SwipeableCard } from '@/components/swipeable-card';
 import { config } from '@/config';
 import { useServerTimer } from '@/hooks/useServerTime';
+import { kmClient } from '@/services/km-client';
 import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { playerStore } from '@/state/stores/player-store';
 import { sounds } from '@/utils/sounds';
-import { KmTimeCountdown } from '@kokimoki/shared';
+import {
+	KmTimeCountdown,
+	useKmAnimatedValue,
+	useKmConfettiContext
+} from '@kokimoki/shared';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -13,6 +18,7 @@ export const PlayerGameView: React.FC = () => {
 	const globalState = useSnapshot(globalStore.proxy);
 	const playerState = useSnapshot(playerStore.proxy);
 	const serverTime = useServerTimer(100);
+	const { triggerConfetti } = useKmConfettiContext();
 
 	// Calculate time remaining
 	const timeElapsed = serverTime - globalState.roundStartTime;
@@ -27,6 +33,15 @@ export const PlayerGameView: React.FC = () => {
 
 	const currentItem = unsortedItems[0];
 	const previousItemCount = React.useRef(unsortedItems.length);
+	const [showResults, setShowResults] = React.useState(false);
+
+	// Animated score value
+	const finalScore = globalState.scores[kmClient.id]?.score || 0;
+	const { ref: scoreRef } = useKmAnimatedValue<HTMLSpanElement>(
+		showResults ? finalScore : 0,
+		0,
+		{ duration: 2000 }
+	);
 
 	// Play success sound when all items are sorted
 	React.useEffect(() => {
@@ -39,6 +54,17 @@ export const PlayerGameView: React.FC = () => {
 		}
 		previousItemCount.current = unsortedItems.length;
 	}, [unsortedItems.length, currentItem]);
+
+	// Trigger results display with confetti
+	React.useEffect(() => {
+		if (timeRemaining === 0 || !currentItem) {
+			setShowResults(true);
+			// Trigger confetti after a small delay
+			setTimeout(() => {
+				triggerConfetti({ preset: 'standard' });
+			}, 300);
+		}
+	}, [timeRemaining, currentItem, triggerConfetti]);
 
 	const handleSwipeLeft = async () => {
 		if (currentItem) {
@@ -57,15 +83,20 @@ export const PlayerGameView: React.FC = () => {
 	// Check if game is over
 	if (timeRemaining === 0 || !currentItem) {
 		return (
-			<div className="flex h-full w-full items-center justify-center p-8 text-center">
-				<div className="space-y-4">
-					<h2 className="text-2xl font-bold">{config.resultsTitle}</h2>
-					<p className="text-lg">
-						{config.yourScore.replace(
-							'{score}',
-							String(globalState.scores[playerState.name]?.score || 0)
-						)}
-					</p>
+			<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-8 text-center">
+				<div className="space-y-6">
+					<h2 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-3xl font-bold text-transparent">
+						{config.resultsTitle}
+					</h2>
+					<div className="space-y-2">
+						<p className="text-lg font-medium text-purple-700">Your Score</p>
+						<div className="text-6xl font-bold text-purple-600">
+							<span ref={scoreRef} />
+						</div>
+						<p className="text-sm text-purple-600">
+							out of {globalState.items.length}
+						</p>
+					</div>
 				</div>
 			</div>
 		);

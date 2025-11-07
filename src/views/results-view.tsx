@@ -2,12 +2,15 @@ import { config } from '@/config';
 import { kmClient } from '@/services/km-client';
 import { globalActions } from '@/state/actions/global-actions';
 import { globalStore } from '@/state/stores/global-store';
+import { playerStore } from '@/state/stores/player-store';
 import { KmPodiumTable } from '@kokimoki/shared';
+import { CheckCircle, XCircle } from 'lucide-react';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
 
 export const ResultsView: React.FC = () => {
 	const globalState = useSnapshot(globalStore.proxy);
+	const playerState = useSnapshot(playerStore.proxy);
 	const isHost = kmClient.clientContext.mode === 'host';
 
 	// Convert scores to podium format
@@ -24,6 +27,51 @@ export const ResultsView: React.FC = () => {
 
 	const playerScore = globalState.scores[kmClient.id];
 
+	// Calculate fallback score if not in global store
+	const fallbackScore = React.useMemo(() => {
+		let correctCount = 0;
+		let totalSorted = 0;
+
+		Object.entries(playerState.sortedItems).forEach(([idx, chosenCategory]) => {
+			const itemIndex = Number.parseInt(idx);
+			const item = globalState.items[itemIndex];
+			if (item) {
+				totalSorted++;
+				if (item.category === chosenCategory) {
+					correctCount++;
+				}
+			}
+		});
+
+		return {
+			name: playerState.name,
+			score: correctCount,
+			sortedItems: totalSorted
+		};
+	}, [playerState.sortedItems, playerState.name, globalState.items]);
+
+	// Use playerScore from global store or fallback to calculated score
+	const displayScore = playerScore || fallbackScore;
+
+	// Create breakdown of player's answers
+	const answerBreakdown = React.useMemo(() => {
+		return Object.entries(playerState.sortedItems)
+			.map(([itemIndex, chosenCategory]) => {
+				const index = Number.parseInt(itemIndex);
+				const item = globalState.items[index];
+				const isCorrect = item && item.category === chosenCategory;
+
+				return {
+					itemIndex: index,
+					text: item?.text || '',
+					correctCategory: item?.category || 0,
+					chosenCategory,
+					isCorrect
+				};
+			})
+			.sort((a, b) => a.itemIndex - b.itemIndex);
+	}, [playerState.sortedItems, globalState.items]);
+
 	return (
 		<div className="w-full max-w-4xl space-y-6">
 			<div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 p-6 shadow-xl">
@@ -32,18 +80,67 @@ export const ResultsView: React.FC = () => {
 				</h2>
 
 				{/* Player's Personal Score */}
-				{playerScore && (
+				{displayScore && (
 					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
 						<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
-							{config.yourScore.replace('{score}', String(playerScore.score))}
+							{config.yourScore.replace('{score}', String(displayScore.score))}
 						</p>
 						<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
 							<span>
-								{config.correctSorts}: {playerScore.score}
+								{config.correctSorts}: {displayScore.score}
 							</span>
 							<span>
-								{config.totalSorts}: {playerScore.sortedItems}
+								{config.totalSorts}: {displayScore.sortedItems}
 							</span>
+						</div>
+					</div>
+				)}
+
+				{/* Detailed Answer Breakdown */}
+				{answerBreakdown.length > 0 && (
+					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
+						<h3 className="mb-4 text-center text-lg font-bold text-purple-700">
+							Your Answer Breakdown
+						</h3>
+						<div className="max-h-60 space-y-2 overflow-y-auto">
+							{answerBreakdown.map((answer) => (
+								<div
+									key={answer.itemIndex}
+									className={`flex items-center justify-between rounded-lg p-3 ${
+										answer.isCorrect
+											? 'border border-green-200 bg-green-100'
+											: 'border border-red-200 bg-red-100'
+									}`}
+								>
+									<div className="flex items-center gap-3">
+										{answer.isCorrect ? (
+											<CheckCircle className="h-5 w-5 text-green-600" />
+										) : (
+											<XCircle className="h-5 w-5 text-red-600" />
+										)}
+										<span className="font-medium text-gray-800">
+											{answer.text}
+										</span>
+									</div>
+									<div className="text-sm">
+										<span
+											className={`rounded-full px-2 py-1 text-xs font-medium ${
+												answer.chosenCategory === 0
+													? 'bg-blue-100 text-blue-700'
+													: 'bg-green-100 text-green-700'
+											}`}
+										>
+											{globalState.categories[answer.chosenCategory]}
+										</span>
+										{!answer.isCorrect && (
+											<span className="ml-2 text-gray-500">
+												(Correct:{' '}
+												{globalState.categories[answer.correctCategory]})
+											</span>
+										)}
+									</div>
+								</div>
+							))}
 						</div>
 					</div>
 				)}

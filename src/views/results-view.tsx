@@ -51,7 +51,12 @@ export const ResultsView: React.FC = () => {
 	}, [playerState.sortedItems, playerState.name, globalState.items]);
 
 	// Use playerScore from global store or fallback to calculated score
-	const displayScore = playerScore || fallbackScore;
+	const displayScore = React.useMemo(() => {
+		if (playerScore && playerScore.name) {
+			return playerScore;
+		}
+		return fallbackScore;
+	}, [playerScore, fallbackScore]);
 
 	// Create breakdown of player's answers
 	const answerBreakdown = React.useMemo(() => {
@@ -80,21 +85,22 @@ export const ResultsView: React.FC = () => {
 				</h2>
 
 				{/* Player's Personal Score */}
-				{displayScore && (
-					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
-						<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
-							{config.yourScore.replace('{score}', String(displayScore.score))}
-						</p>
-						<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
-							<span>
-								{config.correctSorts}: {displayScore.score}
-							</span>
-							<span>
-								{config.totalSorts}: {displayScore.sortedItems}
-							</span>
-						</div>
+				<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
+					<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
+						{config.yourScore.replace(
+							'{score}',
+							String(displayScore.score || 0)
+						)}
+					</p>
+					<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
+						<span>
+							{config.correctSorts}: {displayScore.score || 0}
+						</span>
+						<span>
+							{config.totalSorts}: {displayScore.sortedItems || 0}
+						</span>
 					</div>
-				)}
+				</div>
 
 				{/* Detailed Answer Breakdown */}
 				{answerBreakdown.length > 0 && (

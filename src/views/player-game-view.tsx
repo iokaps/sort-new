@@ -35,8 +35,20 @@ export const PlayerGameView: React.FC = () => {
 	const previousItemCount = React.useRef(unsortedItems.length);
 	const [showResults, setShowResults] = React.useState(false);
 
-	// Animated score value
-	const finalScore = globalState.scores[kmClient.id]?.score || 0;
+	// Animated score value - calculate locally if not in global store
+	const localScore = React.useMemo(() => {
+		let correctCount = 0;
+		Object.entries(playerState.sortedItems).forEach(([idx, chosenCategory]) => {
+			const itemIndex = Number.parseInt(idx);
+			const item = globalState.items[itemIndex];
+			if (item && item.category === chosenCategory) {
+				correctCount++;
+			}
+		});
+		return correctCount;
+	}, [playerState.sortedItems, globalState.items]);
+
+	const finalScore = globalState.scores[kmClient.id]?.score ?? localScore;
 	const { ref: scoreRef } = useKmAnimatedValue<HTMLSpanElement>(
 		showResults ? finalScore : 0,
 		0,
@@ -91,7 +103,7 @@ export const PlayerGameView: React.FC = () => {
 					<div className="space-y-2">
 						<p className="text-lg font-medium text-purple-700">Your Score</p>
 						<div className="text-6xl font-bold text-purple-600">
-							<span ref={scoreRef} />
+							<span ref={scoreRef}>{finalScore}</span>
 						</div>
 						<p className="text-sm text-purple-600">
 							out of {globalState.items.length}

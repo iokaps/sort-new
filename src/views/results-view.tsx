@@ -12,6 +12,7 @@ export const ResultsView: React.FC = () => {
 	const globalState = useSnapshot(globalStore.proxy);
 	const playerState = useSnapshot(playerStore.proxy);
 	const isHost = kmClient.clientContext.mode === 'host';
+	const isPlayer = kmClient.clientContext.mode === 'player';
 
 	// Convert scores to podium format
 	const podiumData = React.useMemo(() => {
@@ -84,26 +85,28 @@ export const ResultsView: React.FC = () => {
 					{config.resultsTitle}
 				</h2>
 
-				{/* Player's Personal Score */}
-				<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
-					<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
-						{config.yourScore.replace(
-							'{score}',
-							String(displayScore.score || 0)
-						)}
-					</p>
-					<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
-						<span>
-							{config.correctSorts}: {displayScore.score || 0}
-						</span>
-						<span>
-							{config.totalSorts}: {displayScore.sortedItems || 0}
-						</span>
+				{/* Player's Personal Score - Only show for players */}
+				{isPlayer && (
+					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
+						<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
+							{config.yourScore.replace(
+								'{score}',
+								String(displayScore.score || 0)
+							)}
+						</p>
+						<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
+							<span>
+								{config.correctSorts}: {displayScore.score || 0}
+							</span>
+							<span>
+								{config.totalSorts}: {displayScore.sortedItems || 0}
+							</span>
+						</div>
 					</div>
-				</div>
+				)}
 
-				{/* Detailed Answer Breakdown */}
-				{answerBreakdown.length > 0 && (
+				{/* Detailed Answer Breakdown - Only show for players */}
+				{isPlayer && answerBreakdown.length > 0 && (
 					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
 						<h3 className="mb-4 text-center text-lg font-bold text-purple-700">
 							Your Answer Breakdown

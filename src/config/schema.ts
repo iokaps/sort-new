@@ -45,7 +45,6 @@ export const schema = z.object({
 	swipeRightHint: z.string().default('Swipe Right →'),
 	or: z.string().default('or'),
 	itemsProgress: z.string().default('Items: {current} / {total}'),
-	timeRemaining: z.string().default('Time: {time}'),
 
 	// Results
 	resultsTitle: z.string().default('Game Results'),
@@ -77,10 +76,6 @@ export const schema = z.object({
 	// Errors
 	generationFailed: z.string().default('Generation failed'),
 
-	menuTitle: z.string().default('Menu'),
-	menuConnections: z.string().default('Connections'),
-	menuGameLobby: z.string().default('Lobby'),
-
 	playerNameTitle: z.string().default('Enter Your Name'),
 	playerNamePlaceholder: z.string().default('Your name...'),
 	playerNameLabel: z.string().default('Name:'),
@@ -91,9 +86,7 @@ export const schema = z.object({
 
 	gameLinksTitle: z.string().default('Game Links'),
 	playerLinkLabel: z.string().default('Player Link'),
-	presenterLinkLabel: z.string().default('Presenter Link'),
-
-	menuAriaLabel: z.string().default('Open menu drawer')
+	presenterLinkLabel: z.string().default('Presenter Link')
 });
 
 export type Config = z.infer<typeof schema>;

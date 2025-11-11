@@ -67,7 +67,6 @@ swipeLeftHint: '← Swipe Left'
 swipeRightHint: 'Swipe Right →'
 or: 'or'
 itemsProgress: 'Items: {current} / {total}'
-timeRemaining: 'Time: {time}'
 
 # Results
 resultsTitle: 'Game Results'
@@ -100,10 +99,6 @@ noScoresYet: 'No scores yet'
 # Errors
 generationFailed: 'Generation failed'
 
-menuTitle: 'Menu'
-menuConnections: 'Connections'
-menuGameLobby: 'Lobby'
-
 playerNameTitle: 'Enter Your Name'
 playerNamePlaceholder: 'Your name...'
 playerNameLabel: 'Name:'
@@ -115,5 +110,3 @@ presenterLabel: 'Presenter'
 gameLinksTitle: 'Game Links'
 playerLinkLabel: 'Player Link'
 presenterLinkLabel: 'Presenter Link'
-
-menuAriaLabel: 'Open menu drawer'

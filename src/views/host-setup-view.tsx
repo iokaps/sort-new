@@ -281,8 +281,12 @@ const ManualSetupTab: React.FC = () => {
 								}
 								className="rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
 							>
-								<option value={0}>{categoryLeft || 'Left'}</option>
-								<option value={1}>{categoryRight || 'Right'}</option>
+								<option value={0}>
+									{categoryLeft || config.categoryLeftDropdown}
+								</option>
+								<option value={1}>
+									{categoryRight || config.categoryRightDropdown}
+								</option>
 							</select>
 							{items.length > 1 && (
 								<button
@@ -310,7 +314,7 @@ const ManualSetupTab: React.FC = () => {
 				onClick={handleSave}
 				className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
 			>
-				Save Configuration
+				{config.saveConfigurationButton}
 			</button>
 		</div>
 	);

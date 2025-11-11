@@ -22,6 +22,9 @@ export const schema = z.object({
 	itemTextPlaceholder: z.string().default('Item text'),
 	addItemButton: z.string().default('Add Item'),
 	removeItemButton: z.string().default('Remove'),
+	categoryLeftDropdown: z.string().default('Left'),
+	categoryRightDropdown: z.string().default('Right'),
+	saveConfigurationButton: z.string().default('Save Configuration'),
 
 	roundDurationLabel: z.string().default('Round Duration (seconds)'),
 	generateButton: z.string().default('Generate with AI'),

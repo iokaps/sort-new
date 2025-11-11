@@ -109,7 +109,7 @@ export const ResultsView: React.FC = () => {
 				{isPlayer && answerBreakdown.length > 0 && (
 					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
 						<h3 className="mb-4 text-center text-lg font-bold text-purple-700">
-							Your Answer Breakdown
+							{config.answerBreakdownTitle}
 						</h3>
 						<div className="max-h-60 space-y-2 overflow-y-auto">
 							{answerBreakdown.map((answer) => (
@@ -143,7 +143,7 @@ export const ResultsView: React.FC = () => {
 										</span>
 										{!answer.isCorrect && (
 											<span className="ml-2 text-gray-500">
-												(Correct:{' '}
+												({config.correctLabel}{' '}
 												{globalState.categories[answer.correctCategory]})
 											</span>
 										)}

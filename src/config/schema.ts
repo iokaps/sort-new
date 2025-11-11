@@ -43,14 +43,19 @@ export const schema = z.object({
 	// Game
 	swipeLeftHint: z.string().default('← Swipe Left'),
 	swipeRightHint: z.string().default('Swipe Right →'),
+	or: z.string().default('or'),
 	itemsProgress: z.string().default('Items: {current} / {total}'),
 	timeRemaining: z.string().default('Time: {time}'),
 
 	// Results
 	resultsTitle: z.string().default('Game Results'),
 	yourScore: z.string().default('Your Score: {score}'),
+	yourScoreLabel: z.string().default('Your Score'),
+	outOf: z.string().default('out of'),
 	correctSorts: z.string().default('Correct Sorts'),
 	totalSorts: z.string().default('Total Sorted'),
+	answerBreakdownTitle: z.string().default('Your Answer Breakdown'),
+	correctLabel: z.string().default('Correct:'),
 	newRoundButton: z.string().default('New Round'),
 	endGameButton: z.string().default('End Game'),
 
@@ -59,6 +64,18 @@ export const schema = z.object({
 	startButton: z.string().default('Start Game'),
 	stopButton: z.string().default('Stop Game'),
 	loading: z.string().default('Loading...'),
+
+	// Host/Presenter
+	gameInProgress: z.string().default('Game in Progress'),
+	categories: z.string().default('Categories'),
+	vs: z.string().default('vs'),
+	liveScores: z.string().default('Live Scores'),
+	scoreLabel: z.string().default('Score:'),
+	sortedLabel: z.string().default('Sorted:'),
+	noScoresYet: z.string().default('No scores yet'),
+
+	// Errors
+	generationFailed: z.string().default('Generation failed'),
 
 	menuTitle: z.string().default('Menu'),
 	menuConnections: z.string().default('Connections'),

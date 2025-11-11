@@ -82,7 +82,7 @@ const App: React.FC = () => {
 
 						{/* Live Scores */}
 						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-							<h3 className="mb-4 text-2xl font-bold">Live Scores</h3>
+							<h3 className="mb-4 text-2xl font-bold">{config.liveScores}</h3>
 							<div className="space-y-2">
 								{Object.entries(globalState.scores)
 									.sort((a, b) => b[1].score - a[1].score)
@@ -96,10 +96,11 @@ const App: React.FC = () => {
 											</span>
 											<div className="flex gap-6 text-sm">
 												<span>
-													Score: <strong>{scoreData.score}</strong>
+													{config.scoreLabel} <strong>{scoreData.score}</strong>
 												</span>
 												<span>
-													Sorted: <strong>{scoreData.sortedItems}</strong>
+													{config.sortedLabel}{' '}
+													<strong>{scoreData.sortedItems}</strong>
 												</span>
 											</div>
 										</div>

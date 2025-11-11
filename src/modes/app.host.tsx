@@ -75,20 +75,23 @@ const App: React.FC = () => {
 				{globalState.gamePhase === 'playing' && (
 					<div className="rounded-lg border border-gray-200 bg-white shadow-md">
 						<div className="p-6">
-							<h2 className="mb-4 text-2xl font-bold">Game in Progress</h2>
+							<h2 className="mb-4 text-2xl font-bold">
+								{config.gameInProgress}
+							</h2>
 							<div className="mb-4 space-y-2">
 								<p>
 									<strong>{config.themeLabel}:</strong> {globalState.theme}
 								</p>
 								<p>
-									<strong>Categories:</strong> {globalState.categories[0]} vs{' '}
+									<strong>{config.categories}:</strong>{' '}
+									{globalState.categories[0]} {config.vs}{' '}
 									{globalState.categories[1]}
 								</p>
 							</div>
 
 							{/* Live Scores */}
 							<div className="space-y-2">
-								<h3 className="text-lg font-bold">Live Scores</h3>
+								<h3 className="text-lg font-bold">{config.liveScores}</h3>
 								{Object.entries(globalState.scores).length > 0 ? (
 									Object.entries(globalState.scores)
 										.sort((a, b) => b[1].score - a[1].score)
@@ -99,13 +102,17 @@ const App: React.FC = () => {
 											>
 												<span className="font-medium">{scoreData.name}</span>
 												<div className="flex gap-4 text-sm">
-													<span>Score: {scoreData.score}</span>
-													<span>Sorted: {scoreData.sortedItems}</span>
+													<span>
+														{config.scoreLabel} {scoreData.score}
+													</span>
+													<span>
+														{config.sortedLabel} {scoreData.sortedItems}
+													</span>
 												</div>
 											</div>
 										))
 								) : (
-									<p className="text-gray-500">No scores yet</p>
+									<p className="text-gray-500">{config.noScoresYet}</p>
 								)}
 							</div>
 

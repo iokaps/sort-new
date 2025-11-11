@@ -101,12 +101,14 @@ export const PlayerGameView: React.FC = () => {
 						{config.resultsTitle}
 					</h2>
 					<div className="space-y-2">
-						<p className="text-lg font-medium text-purple-700">Your Score</p>
+						<p className="text-lg font-medium text-purple-700">
+							{config.yourScoreLabel}
+						</p>
 						<div className="text-6xl font-bold text-purple-600">
 							<span ref={scoreRef}>{finalScore}</span>
 						</div>
 						<p className="text-sm text-purple-600">
-							out of {globalState.items.length}
+							{config.outOf} {globalState.items.length}
 						</p>
 					</div>
 				</div>
@@ -166,7 +168,7 @@ export const PlayerGameView: React.FC = () => {
 
 			{/* Swipe Hint */}
 			<div className="text-center text-sm font-medium text-purple-600">
-				{config.swipeLeftHint} or {config.swipeRightHint}
+				{config.swipeLeftHint} {config.or} {config.swipeRightHint}
 			</div>
 		</div>
 	);

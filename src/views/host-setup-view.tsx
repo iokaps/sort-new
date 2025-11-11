@@ -106,7 +106,7 @@ const AIGenerationTab: React.FC = () => {
 		const result = await globalActions.generateWithAI(themeInput);
 
 		if (!result.success) {
-			setError(result.error || 'Generation failed');
+			setError(result.error || config.generationFailed);
 		}
 
 		setIsGenerating(false);

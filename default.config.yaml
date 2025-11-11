@@ -65,14 +65,19 @@ gameLobbyMd: |
 # Game
 swipeLeftHint: '← Swipe Left'
 swipeRightHint: 'Swipe Right →'
+or: 'or'
 itemsProgress: 'Items: {current} / {total}'
 timeRemaining: 'Time: {time}'
 
 # Results
 resultsTitle: 'Game Results'
 yourScore: 'Your Score: {score}'
+yourScoreLabel: 'Your Score'
+outOf: 'out of'
 correctSorts: 'Correct Sorts'
 totalSorts: 'Total Sorted'
+answerBreakdownTitle: 'Your Answer Breakdown'
+correctLabel: 'Correct:'
 newRoundButton: 'New Round'
 endGameButton: 'End Game'
 
@@ -82,6 +87,18 @@ startButton: 'Start Game'
 stopButton: 'Stop Game'
 
 loading: 'Loading...'
+
+# Host/Presenter
+gameInProgress: 'Game in Progress'
+categories: 'Categories'
+vs: 'vs'
+liveScores: 'Live Scores'
+scoreLabel: 'Score:'
+sortedLabel: 'Sorted:'
+noScoresYet: 'No scores yet'
+
+# Errors
+generationFailed: 'Generation failed'
 
 menuTitle: 'Menu'
 menuConnections: 'Connections'

@@ -1,4 +1,3 @@
-import { PlayerMenu } from '@/components/player/menu';
 import { NameLabel } from '@/components/player/name-label';
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
@@ -63,11 +62,7 @@ const App: React.FC = () => {
 							: 'grid-rows-[auto_1fr_auto]'
 					}
 				>
-					{currentView !== 'game' && (
-						<PlayerLayout.Header>
-							{currentView === 'lobby' && <PlayerMenu />}
-						</PlayerLayout.Header>
-					)}
+					{currentView !== 'game' && <PlayerLayout.Header />}
 					<PlayerLayout.Main>
 						{currentView === 'lobby' && (
 							<div className="flex items-center justify-center p-4">

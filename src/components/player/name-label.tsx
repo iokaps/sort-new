@@ -12,8 +12,11 @@ interface NameLabelProps {
 export const NameLabel: React.FC<NameLabelProps> = ({ name }) => {
 	return (
 		<div className="flex items-center gap-2">
-			<span>{config.playerNameLabel}</span>
-			<span className="font-semibold">{name}</span>
+			<div className="bg-brand font-heading flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white">
+				{name.charAt(0).toUpperCase()}
+			</div>
+			<span className="text-navy/60 text-sm">{config.playerNameLabel}</span>
+			<span className="font-heading text-navy font-bold">{name}</span>
 		</div>
 	);
 };

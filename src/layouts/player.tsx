@@ -10,7 +10,7 @@ interface LayoutProps {
 const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 	<main
 		className={cn(
-			'grid max-h-dvh min-h-dvh grid-rows-[auto_1fr_auto] overflow-hidden bg-slate-100',
+			'bg-cream grid max-h-dvh min-h-dvh grid-rows-[auto_1fr_auto] overflow-hidden',
 			className
 		)}
 	>
@@ -21,12 +21,14 @@ const PlayerRoot: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerHeader: React.FC<LayoutProps> = ({ children, className }) => (
 	<header
 		className={cn(
-			'sticky top-0 z-10 flex-shrink-0 bg-white py-3 shadow-sm',
+			'border-card-border sticky top-0 z-10 flex-shrink-0 border-b-2 bg-white/80 py-3 backdrop-blur-md',
 			className
 		)}
 	>
 		<div className="container mx-auto flex flex-wrap items-center justify-between px-4">
-			<div className="text-lg font-bold">{config.title}</div>
+			<div className="font-heading text-navy text-xl font-bold">
+				{config.title}
+			</div>
 
 			{children}
 		</div>
@@ -42,7 +44,7 @@ const PlayerMain: React.FC<LayoutProps> = ({ children, className }) => (
 const PlayerFooter: React.FC<LayoutProps> = ({ children, className }) => (
 	<footer
 		className={cn(
-			'safe-area-inset-bottom sticky bottom-0 z-10 flex-shrink-0 bg-white p-3 text-gray-900',
+			'safe-area-inset-bottom border-card-border text-navy sticky bottom-0 z-10 flex-shrink-0 border-t-2 bg-white/80 p-3 backdrop-blur-md',
 			className
 		)}
 	>

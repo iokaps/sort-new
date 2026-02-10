@@ -11,9 +11,9 @@ export const HostSetupView: React.FC = () => {
 	const globalState = useSnapshot(globalStore.proxy);
 
 	return (
-		<div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 shadow-xl">
-			<div className="border-b-2 border-purple-200 p-6">
-				<h2 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-2xl font-bold text-transparent">
+		<div className="rounded-game border-card-border shadow-game border-2 bg-white">
+			<div className="border-card-border border-b-2 p-6">
+				<h2 className="font-heading text-navy text-2xl font-bold">
 					{config.setupTitle}
 				</h2>
 			</div>
@@ -25,10 +25,10 @@ export const HostSetupView: React.FC = () => {
 						type="button"
 						onClick={() => setActiveTab('ai')}
 						className={cn(
-							'rounded-xl px-4 py-2 font-medium transition-all',
+							'rounded-game font-heading px-4 py-2 font-bold transition-all',
 							activeTab === 'ai'
-								? 'scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-								: 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+								? 'bg-brand shadow-btn scale-105 text-white'
+								: 'bg-cream-dark text-navy hover:bg-accent-gold-light'
 						)}
 					>
 						{config.aiGenerationTab}
@@ -37,10 +37,10 @@ export const HostSetupView: React.FC = () => {
 						type="button"
 						onClick={() => setActiveTab('manual')}
 						className={cn(
-							'rounded-xl px-4 py-2 font-medium transition-all',
+							'rounded-game font-heading px-4 py-2 font-bold transition-all',
 							activeTab === 'manual'
-								? 'scale-105 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-								: 'bg-purple-100 text-purple-700 hover:bg-purple-200'
+								? 'bg-brand shadow-btn scale-105 text-white'
+								: 'bg-cream-dark text-navy hover:bg-accent-gold-light'
 						)}
 					>
 						{config.manualSetupTab}
@@ -52,9 +52,11 @@ export const HostSetupView: React.FC = () => {
 
 				{/* Preview Section */}
 				{(globalState.theme || globalState.items.length > 0) && (
-					<div className="mt-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
-						<h3 className="mb-3 text-lg font-bold">{config.previewTitle}</h3>
-						<div className="space-y-2 text-sm">
+					<div className="rounded-game border-card-border bg-cream mt-6 border-2 p-4">
+						<h3 className="font-heading text-navy mb-3 text-lg font-bold">
+							{config.previewTitle}
+						</h3>
+						<div className="text-navy space-y-2 text-sm">
 							<p>
 								<strong>{config.themeLabel}:</strong> {globalState.theme}
 							</p>
@@ -82,7 +84,7 @@ export const HostSetupView: React.FC = () => {
 					<button
 						type="button"
 						onClick={globalActions.startGame}
-						className="mt-6 w-full rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
+						className="rounded-game bg-brand font-heading shadow-btn hover:bg-brand-dark mt-6 w-full px-6 py-3 font-bold text-white transition-all hover:scale-105"
 					>
 						{config.startButton}
 					</button>
@@ -115,7 +117,7 @@ const AIGenerationTab: React.FC = () => {
 	return (
 		<div className="space-y-4">
 			<div>
-				<label className="mb-2 block text-sm font-medium text-gray-700">
+				<label className="text-navy-light mb-2 block text-sm font-medium">
 					{config.themeLabel}
 				</label>
 				<input
@@ -123,7 +125,7 @@ const AIGenerationTab: React.FC = () => {
 					value={themeInput}
 					onChange={(e) => setThemeInput(e.target.value)}
 					placeholder={config.themePlaceholder}
-					className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+					className="border-card-border text-navy focus:border-brand w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
 				/>
 			</div>
 
@@ -131,7 +133,7 @@ const AIGenerationTab: React.FC = () => {
 				type="button"
 				onClick={handleGenerate}
 				disabled={!themeInput.trim() || isGenerating}
-				className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105 disabled:scale-100 disabled:bg-gray-400"
+				className="rounded-game bg-brand font-heading shadow-btn hover:bg-brand-dark w-full px-6 py-3 font-bold text-white transition-all hover:scale-105 disabled:scale-100 disabled:bg-gray-400 disabled:shadow-none"
 			>
 				{isGenerating ? config.generatingText : config.generateButton}
 			</button>
@@ -207,7 +209,7 @@ const ManualSetupTab: React.FC = () => {
 	return (
 		<div className="space-y-4">
 			<div>
-				<label className="mb-2 block text-sm font-medium text-gray-700">
+				<label className="text-navy-light mb-2 block text-sm font-medium">
 					{config.themeLabel}
 				</label>
 				<input
@@ -215,13 +217,13 @@ const ManualSetupTab: React.FC = () => {
 					value={theme}
 					onChange={(e) => setTheme(e.target.value)}
 					placeholder={config.themePlaceholder}
-					className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+					className="border-card-border text-navy focus:border-brand w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
 				/>
 			</div>
 
 			<div className="grid grid-cols-2 gap-4">
 				<div>
-					<label className="mb-2 block text-sm font-medium text-gray-700">
+					<label className="text-navy-light mb-2 block text-sm font-medium">
 						{config.categoryLeftLabel}
 					</label>
 					<input
@@ -229,11 +231,11 @@ const ManualSetupTab: React.FC = () => {
 						value={categoryLeft}
 						onChange={(e) => setCategoryLeft(e.target.value)}
 						placeholder={config.categoryLeftPlaceholder}
-						className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+						className="border-card-border text-navy focus:border-brand w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
 					/>
 				</div>
 				<div>
-					<label className="mb-2 block text-sm font-medium text-gray-700">
+					<label className="text-navy-light mb-2 block text-sm font-medium">
 						{config.categoryRightLabel}
 					</label>
 					<input
@@ -241,13 +243,13 @@ const ManualSetupTab: React.FC = () => {
 						value={categoryRight}
 						onChange={(e) => setCategoryRight(e.target.value)}
 						placeholder={config.categoryRightPlaceholder}
-						className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+						className="border-card-border text-navy focus:border-brand w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
 					/>
 				</div>
 			</div>
 
 			<div>
-				<label className="mb-2 block text-sm font-medium text-gray-700">
+				<label className="text-navy-light mb-2 block text-sm font-medium">
 					{config.roundDurationLabel}
 				</label>
 				<input
@@ -256,12 +258,12 @@ const ManualSetupTab: React.FC = () => {
 					max="300"
 					value={roundDuration}
 					onChange={(e) => setRoundDuration(Number(e.target.value))}
-					className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+					className="border-card-border text-navy focus:border-brand w-full rounded-lg border-2 px-4 py-2 focus:outline-none"
 				/>
 			</div>
 
 			<div>
-				<label className="mb-2 block text-sm font-medium text-gray-700">
+				<label className="text-navy-light mb-2 block text-sm font-medium">
 					{config.itemsLabel}
 				</label>
 				<div className="space-y-2">
@@ -272,14 +274,14 @@ const ManualSetupTab: React.FC = () => {
 								value={item.text}
 								onChange={(e) => updateItem(index, 'text', e.target.value)}
 								placeholder={config.itemTextPlaceholder}
-								className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+								className="border-card-border text-navy focus:border-brand flex-1 rounded-lg border-2 px-4 py-2 focus:outline-none"
 							/>
 							<select
 								value={item.category}
 								onChange={(e) =>
 									updateItem(index, 'category', Number(e.target.value))
 								}
-								className="rounded-lg border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none"
+								className="border-card-border text-navy focus:border-brand rounded-lg border-2 px-4 py-2 focus:outline-none"
 							>
 								<option value={0}>
 									{categoryLeft || config.categoryLeftDropdown}
@@ -292,7 +294,7 @@ const ManualSetupTab: React.FC = () => {
 								<button
 									type="button"
 									onClick={() => removeItem(index)}
-									className="rounded-lg bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700"
+									className="rounded-lg bg-red-500 px-4 py-2 font-semibold text-white transition-colors hover:bg-red-600"
 								>
 									{config.removeItemButton}
 								</button>
@@ -303,7 +305,7 @@ const ManualSetupTab: React.FC = () => {
 				<button
 					type="button"
 					onClick={addItem}
-					className="mt-2 rounded-lg bg-gray-600 px-4 py-2 text-white transition-colors hover:bg-gray-700"
+					className="border-card-border bg-cream-dark text-navy hover:bg-brand-light mt-2 rounded-lg border-2 px-4 py-2 font-semibold transition-colors hover:text-white"
 				>
 					{config.addItemButton}
 				</button>
@@ -312,7 +314,7 @@ const ManualSetupTab: React.FC = () => {
 			<button
 				type="button"
 				onClick={handleSave}
-				className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
+				className="rounded-game bg-brand font-heading shadow-btn hover:bg-brand-dark w-full px-6 py-3 font-bold text-white transition-all hover:scale-105"
 			>
 				{config.saveConfigurationButton}
 			</button>

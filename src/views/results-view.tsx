@@ -21,7 +21,7 @@ export const ResultsView: React.FC = () => {
 				id: clientId,
 				name: scoreData.name,
 				points: scoreData.score,
-				color: '#3b82f6'
+				color: '#6366f1'
 			}))
 			.sort((a, b) => b.points - a.points);
 	}, [globalState.scores]);
@@ -80,21 +80,21 @@ export const ResultsView: React.FC = () => {
 
 	return (
 		<div className="w-full max-w-4xl space-y-6">
-			<div className="rounded-xl border-2 border-purple-200 bg-gradient-to-br from-white via-purple-50 to-pink-50 p-6 shadow-xl">
-				<h2 className="mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-center text-3xl font-bold text-transparent">
+			<div className="rounded-game border-card-border shadow-game border-2 bg-white p-6">
+				<h2 className="font-heading text-navy mb-6 text-center text-3xl font-bold">
 					{config.resultsTitle}
 				</h2>
 
 				{/* Player's Personal Score - Only show for players */}
 				{isPlayer && (
-					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-100 to-pink-100 p-4 text-center">
-						<p className="bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-xl font-bold text-transparent">
+					<div className="rounded-game bg-brand/10 border-brand/20 mb-6 border-2 p-4 text-center">
+						<p className="font-heading text-brand text-xl font-bold">
 							{config.yourScore.replace(
 								'{score}',
 								String(displayScore.score || 0)
 							)}
 						</p>
-						<div className="mt-2 flex justify-center gap-6 text-sm font-medium text-purple-700">
+						<div className="text-navy/70 mt-2 flex justify-center gap-6 text-sm font-semibold">
 							<span>
 								{config.correctSorts}: {displayScore.score || 0}
 							</span>
@@ -107,8 +107,8 @@ export const ResultsView: React.FC = () => {
 
 				{/* Detailed Answer Breakdown - Only show for players */}
 				{isPlayer && answerBreakdown.length > 0 && (
-					<div className="mb-6 rounded-xl border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-pink-50 p-4">
-						<h3 className="mb-4 text-center text-lg font-bold text-purple-700">
+					<div className="rounded-game border-card-border bg-cream mb-6 border-2 p-4">
+						<h3 className="font-heading text-navy mb-4 text-center text-lg font-bold">
 							{config.answerBreakdownTitle}
 						</h3>
 						<div className="max-h-60 space-y-2 overflow-y-auto">
@@ -127,22 +127,20 @@ export const ResultsView: React.FC = () => {
 										) : (
 											<XCircle className="h-5 w-5 text-red-600" />
 										)}
-										<span className="font-medium text-gray-800">
-											{answer.text}
-										</span>
+										<span className="text-navy font-medium">{answer.text}</span>
 									</div>
 									<div className="text-sm">
 										<span
-											className={`rounded-full px-2 py-1 text-xs font-medium ${
+											className={`rounded-full px-2 py-1 text-xs font-bold ${
 												answer.chosenCategory === 0
-													? 'bg-blue-100 text-blue-700'
-													: 'bg-green-100 text-green-700'
+													? 'bg-cat-left/15 text-cat-left-dark'
+													: 'bg-cat-right/15 text-cat-right-dark'
 											}`}
 										>
 											{globalState.categories[answer.chosenCategory]}
 										</span>
 										{!answer.isCorrect && (
-											<span className="ml-2 text-gray-500">
+											<span className="text-navy-light ml-2">
 												({config.correctLabel}{' '}
 												{globalState.categories[answer.correctCategory]})
 											</span>
@@ -168,14 +166,14 @@ export const ResultsView: React.FC = () => {
 						<button
 							type="button"
 							onClick={globalActions.startNewRound}
-							className="flex-1 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
+							className="rounded-game bg-brand font-heading shadow-btn hover:bg-brand-dark flex-1 px-6 py-3 font-bold text-white transition-all hover:scale-105"
 						>
 							{config.newRoundButton}
 						</button>
 						<button
 							type="button"
 							onClick={globalActions.stopGame}
-							className="flex-1 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105"
+							className="rounded-game bg-navy-light font-heading shadow-game hover:bg-navy flex-1 px-6 py-3 font-bold text-white transition-all hover:scale-105"
 						>
 							{config.endGameButton}
 						</button>

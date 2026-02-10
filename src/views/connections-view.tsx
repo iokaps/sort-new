@@ -28,34 +28,42 @@ export const ConnectionsView: React.FC<React.PropsWithChildren<Props>> = ({
 	return (
 		<div
 			className={cn(
-				'bg-white border border-gray-200 rounded-lg shadow-md w-full',
+				'border-card-border rounded-game shadow-game w-full border-2 bg-white',
 				className
 			)}
 		>
 			<div className="p-6">
-				<div className="prose">
+				<div className="prose prose-headings:font-heading prose-headings:text-navy">
 					<Markdown>{config.connectionsMd}</Markdown>
 				</div>
 
-				<div className="mt-4 bg-white border border-gray-200 rounded-lg shadow p-6">
-					<div className="text-sm text-gray-500">{config.players}</div>
-					<div className="text-3xl font-bold mt-1">{onlinePlayersCount}</div>
+				<div className="bg-cream border-card-border rounded-game mt-4 border-2 p-6 shadow-sm">
+					<div className="text-navy/60 text-sm font-semibold">
+						{config.players}
+					</div>
+					<div className="font-heading text-navy mt-1 text-3xl font-bold">
+						{onlinePlayersCount}
+					</div>
 				</div>
 
 				{playersList.length > 0 && (
 					<div className="mt-4">
-						<h3 className="mb-2 text-lg font-semibold">Player List</h3>
-						<ul className="bg-slate-50 rounded-lg divide-y divide-gray-200">
+						<h3 className="font-heading text-navy mb-2 text-lg font-bold">
+							Player List
+						</h3>
+						<ul className="bg-cream rounded-game divide-card-border border-card-border divide-y border-2">
 							{playersList.map((player) => (
 								<li key={player.id} className="px-4 py-3">
 									<div className="flex items-center justify-between">
-										<span>{player.name}</span>
+										<span className="text-navy font-semibold">
+											{player.name}
+										</span>
 										<span
 											className={cn(
-												'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium',
+												'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
 												player.isOnline
 													? 'bg-green-100 text-green-800'
-													: 'border border-gray-300 text-gray-700'
+													: 'border-card-border text-navy-light border'
 											)}
 										>
 											{player.isOnline ? 'Online' : 'Offline'}

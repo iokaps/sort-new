@@ -17,11 +17,11 @@ export const GameLobbyView: React.FC<React.PropsWithChildren<Props>> = ({
 	return (
 		<div
 			className={cn(
-				'bg-white border border-gray-200 rounded-lg shadow-md w-full max-w-screen-sm',
+				'border-card-border rounded-game shadow-game animate-float w-full max-w-screen-sm border-2 bg-white',
 				className
 			)}
 		>
-			<div className="p-6 prose">
+			<div className="prose prose-headings:font-heading prose-headings:text-navy p-6">
 				<Markdown>{config.gameLobbyMd}</Markdown>
 			</div>
 		</div>

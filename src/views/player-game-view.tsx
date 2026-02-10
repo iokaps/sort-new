@@ -5,12 +5,14 @@ import { kmClient } from '@/services/km-client';
 import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
 import { playerStore } from '@/state/stores/player-store';
+import { cn } from '@/utils/cn';
 import { sounds } from '@/utils/sounds';
 import {
 	KmTimeCountdown,
 	useKmAnimatedValue,
 	useKmConfettiContext
 } from '@kokimoki/shared';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { useSnapshot } from 'valtio';
 
@@ -95,19 +97,24 @@ export const PlayerGameView: React.FC = () => {
 	// Check if game is over
 	if (timeRemaining === 0 || !currentItem) {
 		return (
-			<div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-8 text-center">
-				<div className="space-y-6">
-					<h2 className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-3xl font-bold text-transparent">
+			<div className="bg-cream flex h-full w-full items-center justify-center p-8 text-center">
+				<div className="animate-slide-up space-y-6">
+					<h2 className="font-heading text-navy text-4xl font-bold">
 						{config.resultsTitle}
 					</h2>
-					<div className="space-y-2">
-						<p className="text-lg font-medium text-purple-700">
+					<div className="space-y-3">
+						<p className="text-navy/60 text-lg font-semibold">
 							{config.yourScoreLabel}
 						</p>
-						<div className="text-6xl font-bold text-purple-600">
-							<span ref={scoreRef}>{finalScore}</span>
+						<div className="bg-brand shadow-btn inline-flex items-center justify-center rounded-2xl px-8 py-4">
+							<span
+								ref={scoreRef}
+								className="font-heading text-6xl font-bold text-white"
+							>
+								{finalScore}
+							</span>
 						</div>
-						<p className="text-sm text-purple-600">
+						<p className="text-navy/50 text-sm font-medium">
 							{config.outOf} {globalState.items.length}
 						</p>
 					</div>
@@ -116,17 +123,29 @@ export const PlayerGameView: React.FC = () => {
 		);
 	}
 
+	const urgency =
+		globalState.roundDuration > 0
+			? timeRemaining / globalState.roundDuration
+			: 1;
+
 	return (
-		<div className="pb-safe flex h-full w-full flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-4">
+		<div className="pb-safe bg-cream flex h-full w-full flex-col items-center justify-center gap-4 p-4">
 			{/* Timer */}
 			<div className="text-center">
-				<div className="text-3xl font-bold text-purple-600">
+				<div
+					className={cn(
+						'font-heading inline-flex items-center rounded-2xl px-6 py-2 text-3xl font-bold shadow-lg transition-colors duration-500',
+						urgency > 0.5 && 'bg-emerald-500 text-white',
+						urgency > 0.25 && urgency <= 0.5 && 'text-navy bg-amber-400',
+						urgency <= 0.25 && 'animate-timer-pulse bg-red-500 text-white'
+					)}
+				>
 					<KmTimeCountdown ms={timeRemaining} />
 				</div>
 			</div>
 
 			{/* Progress */}
-			<div className="text-center text-sm font-medium text-purple-700">
+			<div className="bg-navy/10 text-navy/70 rounded-full px-4 py-1 text-center text-sm font-semibold">
 				{config.itemsProgress
 					.replace(
 						'{current}',
@@ -135,31 +154,31 @@ export const PlayerGameView: React.FC = () => {
 					.replace('{total}', String(globalState.items.length))}
 			</div>
 
-			{/* Category Labels - Fixed at top */}
-			<div className="flex w-full max-w-md justify-between px-4 text-center">
-				<div className="flex flex-col items-center gap-1">
-					<div className="text-4xl">←</div>
-					<div className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-3 py-1 text-base font-bold text-white shadow-lg">
+			{/* Category Labels */}
+			<div className="flex w-full max-w-md items-center justify-between px-2">
+				<div className="bg-cat-left flex items-center gap-1.5 rounded-xl px-4 py-2 shadow-md">
+					<ChevronLeft className="h-5 w-5 text-white" />
+					<span className="font-heading text-sm font-bold text-white">
 						{globalState.categories[0]}
-					</div>
+					</span>
 				</div>
-				<div className="flex flex-col items-center gap-1">
-					<div className="text-4xl">→</div>
-					<div className="rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 px-3 py-1 text-base font-bold text-white shadow-lg">
+				<div className="bg-cat-right flex items-center gap-1.5 rounded-xl px-4 py-2 shadow-md">
+					<span className="font-heading text-sm font-bold text-white">
 						{globalState.categories[1]}
-					</div>
+					</span>
+					<ChevronRight className="h-5 w-5 text-white" />
 				</div>
 			</div>
 
-			{/* Swipeable Round Chip */}
+			{/* Swipeable Card */}
 			<div className="relative flex w-full max-w-md flex-1 items-center justify-center">
 				<SwipeableCard
 					onSwipeLeft={handleSwipeLeft}
 					onSwipeRight={handleSwipeRight}
 					className="w-full"
 				>
-					<div className="mx-auto flex aspect-square w-[280px] items-center justify-center rounded-full border-4 border-white bg-gradient-to-br from-amber-100 via-orange-100 to-pink-100 p-8 text-center shadow-2xl">
-						<p className="bg-gradient-to-br from-purple-700 to-pink-700 bg-clip-text text-xl leading-tight font-bold break-words text-transparent">
+					<div className="rounded-game border-card-border shadow-card mx-auto flex min-h-[260px] w-full max-w-[320px] items-center justify-center border-3 bg-white p-8 text-center">
+						<p className="font-heading text-navy text-2xl leading-tight font-bold break-words">
 							{currentItem.item.text}
 						</p>
 					</div>
@@ -167,7 +186,7 @@ export const PlayerGameView: React.FC = () => {
 			</div>
 
 			{/* Swipe Hint */}
-			<div className="text-center text-sm font-medium text-purple-600">
+			<div className="text-navy/40 text-center text-sm font-medium">
 				{config.swipeLeftHint} {config.or} {config.swipeRightHint}
 			</div>
 		</div>

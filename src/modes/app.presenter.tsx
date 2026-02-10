@@ -35,26 +35,28 @@ const App: React.FC = () => {
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header>
-				<div className="text-sm opacity-70">{config.presenterLabel}</div>
+				<div className="text-sm text-white/50">{config.presenterLabel}</div>
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
 				{/* Player Join Section */}
 				{globalState.gamePhase === 'setup' ||
 				globalState.gamePhase === 'lobby' ? (
-					<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+					<div className="rounded-game border-card-border shadow-game border-2 bg-white">
 						<div className="flex flex-col items-center gap-4 p-8">
-							<h2 className="text-2xl font-bold">{config.playerLinkLabel}</h2>
+							<h2 className="font-heading text-navy text-2xl font-bold">
+								{config.playerLinkLabel}
+							</h2>
 							<KmQrCode data={playerLink} size={300} interactive={false} />
 							<a
 								href={playerLink}
 								target="_blank"
 								rel="noreferrer"
-								className="text-xl break-all text-blue-600 underline hover:text-blue-700"
+								className="text-brand hover:text-brand-dark text-xl font-semibold break-all underline"
 							>
 								{playerLink}
 							</a>
-							<div className="mt-4 text-lg">
+							<div className="text-navy mt-4 text-lg">
 								<strong>{config.players}:</strong> {connections.clientIds.size}
 							</div>
 						</div>
@@ -63,38 +65,40 @@ const App: React.FC = () => {
 				{/* Playing State */}
 				{globalState.gamePhase === 'playing' && (
 					<div className="space-y-6">
-						<div className="rounded-lg border border-gray-200 bg-white p-8 shadow-md">
-							<h2 className="mb-4 text-center text-4xl font-bold">
+						<div className="rounded-game border-card-border shadow-game border-2 bg-white p-8">
+							<h2 className="font-heading text-navy mb-4 text-center text-4xl font-bold">
 								{globalState.theme}
 							</h2>
 							<div className="mb-6 flex justify-center gap-12 text-2xl">
-								<div className="font-bold text-blue-600">
+								<div className="font-heading text-cat-left font-bold">
 									{globalState.categories[0]}
 								</div>
-								<div className="font-bold text-green-600">
+								<div className="font-heading text-cat-right font-bold">
 									{globalState.categories[1]}
 								</div>
 							</div>
-							<div className="text-center text-3xl font-bold">
+							<div className="font-heading text-navy text-center text-3xl font-bold">
 								<KmTimeCountdown ms={timeRemaining} />
 							</div>
 						</div>
 
 						{/* Live Scores */}
-						<div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-							<h3 className="mb-4 text-2xl font-bold">{config.liveScores}</h3>
+						<div className="rounded-game border-card-border shadow-game border-2 bg-white p-6">
+							<h3 className="font-heading text-navy mb-4 text-2xl font-bold">
+								{config.liveScores}
+							</h3>
 							<div className="space-y-2">
 								{Object.entries(globalState.scores)
 									.sort((a, b) => b[1].score - a[1].score)
 									.map(([clientId, scoreData]) => (
 										<div
 											key={clientId}
-											className="flex items-center justify-between rounded-lg bg-gray-50 p-4"
+											className="rounded-game bg-cream flex items-center justify-between p-4"
 										>
-											<span className="text-lg font-medium">
+											<span className="text-navy text-lg font-medium">
 												{scoreData.name}
 											</span>
-											<div className="flex gap-6 text-sm">
+											<div className="text-navy-light flex gap-6 text-sm">
 												<span>
 													{config.scoreLabel} <strong>{scoreData.score}</strong>
 												</span>

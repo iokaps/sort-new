@@ -35,35 +35,37 @@ const App: React.FC = () => {
 	return (
 		<HostPresenterLayout.Root>
 			<HostPresenterLayout.Header>
-				<div className="text-sm opacity-70">{config.hostLabel}</div>
+				<div className="text-sm text-white/50">{config.hostLabel}</div>
 			</HostPresenterLayout.Header>
 
 			<HostPresenterLayout.Main>
 				{/* Game Links */}
-				<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+				<div className="rounded-game border-card-border shadow-game border-2 bg-white">
 					<div className="flex flex-col gap-2 p-6">
-						<h2 className="text-xl font-bold">{config.gameLinksTitle}</h2>
+						<h2 className="font-heading text-navy text-xl font-bold">
+							{config.gameLinksTitle}
+						</h2>
 						<KmQrCode data={playerLink} size={200} interactive={false} />
 						<div className="flex gap-2">
 							<a
 								href={playerLink}
 								target="_blank"
 								rel="noreferrer"
-								className="break-all text-blue-600 underline hover:text-blue-700"
+								className="text-brand hover:text-brand-dark font-semibold break-all underline"
 							>
 								{config.playerLinkLabel}
 							</a>
-							|
+							<span className="text-navy/30">|</span>
 							<a
 								href={presenterLink}
 								target="_blank"
 								rel="noreferrer"
-								className="break-all text-blue-600 underline hover:text-blue-700"
+								className="text-brand hover:text-brand-dark font-semibold break-all underline"
 							>
 								{config.presenterLinkLabel}
 							</a>
 						</div>
-						<div className="mt-2">
+						<div className="text-navy mt-2">
 							<strong>{config.players}:</strong> {connections.clientIds.size}
 						</div>
 					</div>
@@ -73,12 +75,12 @@ const App: React.FC = () => {
 					globalState.gamePhase === 'lobby') && <HostSetupView />}
 				{/* Playing Phase */}
 				{globalState.gamePhase === 'playing' && (
-					<div className="rounded-lg border border-gray-200 bg-white shadow-md">
+					<div className="rounded-game border-card-border shadow-game border-2 bg-white">
 						<div className="p-6">
-							<h2 className="mb-4 text-2xl font-bold">
+							<h2 className="font-heading text-navy mb-4 text-2xl font-bold">
 								{config.gameInProgress}
 							</h2>
-							<div className="mb-4 space-y-2">
+							<div className="text-navy mb-4 space-y-2">
 								<p>
 									<strong>{config.themeLabel}:</strong> {globalState.theme}
 								</p>
@@ -91,17 +93,21 @@ const App: React.FC = () => {
 
 							{/* Live Scores */}
 							<div className="space-y-2">
-								<h3 className="text-lg font-bold">{config.liveScores}</h3>
+								<h3 className="font-heading text-navy text-lg font-bold">
+									{config.liveScores}
+								</h3>
 								{Object.entries(globalState.scores).length > 0 ? (
 									Object.entries(globalState.scores)
 										.sort((a, b) => b[1].score - a[1].score)
 										.map(([clientId, scoreData]) => (
 											<div
 												key={clientId}
-												className="flex items-center justify-between rounded-lg bg-gray-50 p-3"
+												className="rounded-game bg-cream flex items-center justify-between p-3"
 											>
-												<span className="font-medium">{scoreData.name}</span>
-												<div className="flex gap-4 text-sm">
+												<span className="text-navy font-medium">
+													{scoreData.name}
+												</span>
+												<div className="text-navy-light flex gap-4 text-sm">
 													<span>
 														{config.scoreLabel} {scoreData.score}
 													</span>
@@ -112,14 +118,14 @@ const App: React.FC = () => {
 											</div>
 										))
 								) : (
-									<p className="text-gray-500">{config.noScoresYet}</p>
+									<p className="text-navy-light">{config.noScoresYet}</p>
 								)}
 							</div>
 
 							<button
 								type="button"
 								onClick={globalActions.stopGame}
-								className="mt-6 w-full rounded-lg bg-red-600 px-6 py-3 font-bold text-white transition-colors hover:bg-red-700"
+								className="rounded-game font-heading mt-6 w-full bg-red-500 px-6 py-3 font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-red-600"
 							>
 								{config.stopButton}
 							</button>

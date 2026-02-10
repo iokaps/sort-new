@@ -31,12 +31,14 @@ export const CreateProfileView: React.FC<Props> = ({ className }) => {
 	return (
 		<div
 			className={cn(
-				'bg-white border border-gray-200 rounded-lg shadow-md w-full max-w-96',
+				'border-card-border rounded-game shadow-game w-full max-w-96 border-2 bg-white',
 				className
 			)}
 		>
 			<div className="p-6">
-				<h2 className="text-xl font-bold mb-2">{config.playerNameTitle}</h2>
+				<h2 className="font-heading text-navy mb-2 text-xl font-bold">
+					{config.playerNameTitle}
+				</h2>
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<label className="block">
 						<input
@@ -47,17 +49,17 @@ export const CreateProfileView: React.FC<Props> = ({ className }) => {
 							disabled={isLoading}
 							autoFocus
 							maxLength={50}
-							className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="border-card-border rounded-game focus:border-brand focus:ring-brand/20 w-full border-2 px-4 py-3 transition-all focus:ring-2 focus:outline-none"
 						/>
 					</label>
 					<button
 						type="submit"
-						className="w-full px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+						className="rounded-game bg-brand hover:bg-brand-dark font-heading shadow-btn w-full px-4 py-3 font-bold text-white transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none disabled:hover:scale-100"
 						disabled={!name.trim() || isLoading}
 					>
 						{isLoading ? (
 							<>
-								<span className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+								<span className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-white"></span>
 								{config.loading}
 							</>
 						) : (

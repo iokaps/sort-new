@@ -1,6 +1,7 @@
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useGlobalController } from '@/hooks/useGlobalController';
+import { useRemoveLoadingOverlay } from '@/hooks/useRemoveLoadingOverlay';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
 import { kmClient } from '@/services/km-client';
@@ -14,6 +15,7 @@ import { useSnapshot } from 'valtio';
 
 const App: React.FC = () => {
 	useGlobalController();
+	useRemoveLoadingOverlay();
 	const { title } = config;
 	const globalState = useSnapshot(globalStore.proxy);
 	const connections = useSnapshot(globalStore.connections);

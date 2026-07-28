@@ -1,6 +1,7 @@
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useGlobalController } from '@/hooks/useGlobalController';
+import { useRemoveLoadingOverlay } from '@/hooks/useRemoveLoadingOverlay';
 import { useServerTimer } from '@/hooks/useServerTime';
 import { generateLink } from '@/kit/generate-link';
 import { HostPresenterLayout } from '@/layouts/host-presenter';
@@ -18,6 +19,7 @@ const App: React.FC = () => {
 	const serverTime = useServerTimer(100);
 
 	useGlobalController();
+	useRemoveLoadingOverlay();
 	useDocumentTitle(title);
 
 	if (kmClient.clientContext.mode !== 'presenter') {

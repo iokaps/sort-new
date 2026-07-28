@@ -2,6 +2,7 @@ import { NameLabel } from '@/components/player/name-label';
 import { config } from '@/config';
 import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { useGlobalController } from '@/hooks/useGlobalController';
+import { useRemoveLoadingOverlay } from '@/hooks/useRemoveLoadingOverlay';
 import { PlayerLayout } from '@/layouts/player';
 import { playerActions } from '@/state/actions/player-actions';
 import { globalStore } from '@/state/stores/global-store';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
 	const { started, gamePhase } = useSnapshot(globalStore.proxy);
 
 	useGlobalController();
+	useRemoveLoadingOverlay();
 	useDocumentTitle(title);
 
 	// Auto-transition views based on game phase

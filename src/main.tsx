@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { config } from './config';
+import { watchLoadingOverlays } from './hooks/useRemoveLoadingOverlay';
 import { launchApp } from './kit/app-launcher.tsx';
 
 function renderComponent(component: React.ReactNode) {
@@ -8,6 +9,8 @@ function renderComponent(component: React.ReactNode) {
 		<React.StrictMode>{component}</React.StrictMode>
 	);
 }
+
+watchLoadingOverlays();
 
 const appImports = {
 	host: () => import('./modes/app.host.tsx'),
